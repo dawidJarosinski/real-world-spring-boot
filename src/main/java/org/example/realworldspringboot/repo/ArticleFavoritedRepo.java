@@ -1,4 +1,4 @@
-package org.example.realworldspringboot.model.repo;
+package org.example.realworldspringboot.repo;
 
 import org.example.realworldspringboot.model.entity.ArticleFavorited;
 import org.springframework.data.jpa.repository.JpaRepository;
