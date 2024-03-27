@@ -1,5 +1,8 @@
 package org.example.realworldspringboot.config;
 
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.example.realworldspringboot.config.exceptions.UserAlreadyExistsException;
 import org.example.realworldspringboot.config.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -21,4 +24,5 @@ public class AppExceptionHandler {
     public String userAlreadyExistsExceptionHandler(UserAlreadyExistsException ex) {
         return ex.getMessage();
     }
+    
 }
