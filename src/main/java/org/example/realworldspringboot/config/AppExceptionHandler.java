@@ -1,8 +1,6 @@
 package org.example.realworldspringboot.config;
 
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.security.SignatureException;
+import org.example.realworldspringboot.config.exceptions.CantFollowYourselfOrAlreadyFollowedException;
 import org.example.realworldspringboot.config.exceptions.UserAlreadyExistsException;
 import org.example.realworldspringboot.config.exceptions.UserNotFoundException;
 import org.example.realworldspringboot.config.exceptions.UsernameOrEmailIsAlreadyTakenException;
@@ -29,6 +27,12 @@ public class AppExceptionHandler {
     @ExceptionHandler(UsernameOrEmailIsAlreadyTakenException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String usernameOrEmailIsAlreadyTakenExceptionHandler(UsernameOrEmailIsAlreadyTakenException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(CantFollowYourselfOrAlreadyFollowedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String cantFollowYourselfOrAlreadyFollowedExceptionHandler(CantFollowYourselfOrAlreadyFollowedException ex) {
         return ex.getMessage();
     }
 }

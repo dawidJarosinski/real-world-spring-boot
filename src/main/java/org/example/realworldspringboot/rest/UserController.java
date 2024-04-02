@@ -6,8 +6,6 @@ import org.example.realworldspringboot.dto.request.UserRequest;
 import org.example.realworldspringboot.dto.response.UserResponse;
 import org.example.realworldspringboot.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
