@@ -2,14 +2,13 @@ package org.example.realworldspringboot.rest;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.realworldspringboot.dto.request.UserRequest;
 import org.example.realworldspringboot.dto.response.UserResponse;
 import org.example.realworldspringboot.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -21,13 +20,13 @@ public class UserController {
 
     private final UserService userService;
 
-//    @GetMapping("/user")
-//    public ResponseEntity<UserResponse> getActualUser(Authentication authenticaion) {
-//        return ResponseEntity.ok(userService.getActualUser(authenticaion.getName()));
-//    }
+    @GetMapping("/user")
+    public ResponseEntity<UserResponse> getActualUser(Principal principal) {
+        return ResponseEntity.ok(userService.getActualUser(principal.getName()));
+    }
 
-    @GetMapping("/hello")
-    public String getActualUser(Principal principal) {
-        return "hello" + principal.getName();
+    @PutMapping("/user")
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest userRequest, Principal principal) {
+        return ResponseEntity.ok(userService.updateUser(userRequest, principal.getName()));
     }
 }
