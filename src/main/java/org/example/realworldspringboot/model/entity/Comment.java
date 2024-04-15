@@ -21,9 +21,11 @@ public class Comment {
 
     @Column(name = "comment_content")
     private String content;
+
     @ManyToOne
     @JoinColumn(name = "comment_author")
     private User author;
+
     @ManyToOne
     @JoinColumn(name = "comment_article")
     private Article article;

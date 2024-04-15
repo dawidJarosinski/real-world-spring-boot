@@ -25,4 +25,8 @@ public class ArticleTag {
     @JoinColumn(name = "article_tag_tag")
     private Tag tag;
 
+    public ArticleTag(Article article, Tag tag) {
+        this.article = article;
+        this.tag = tag;
+    }
 }

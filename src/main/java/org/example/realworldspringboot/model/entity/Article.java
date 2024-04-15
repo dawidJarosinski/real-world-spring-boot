@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "articles")
@@ -23,7 +24,7 @@ public class Article {
     @Column(name = "article_slug")
     private String slug;
 
-    @Column(name = "article_title")
+    @Column(name = "article_title", unique = true)
     private String title;
 
     @Column(name = "article_description")
@@ -41,4 +42,19 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "article_author")
     private User author;
+
+    public Article(String title, String description, String body, User author) {
+        this.title = title;
+        this.description = description;
+        this.body = body;
+        this.author = author;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.slug = titleToSlug(title);
+    }
+
+    public static String titleToSlug(String title) {
+        return title.toLowerCase().replaceAll("\\s+", "-");
+    }
+
 }

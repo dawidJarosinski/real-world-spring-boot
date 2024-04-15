@@ -1,9 +1,6 @@
 package org.example.realworldspringboot.config;
 
-import org.example.realworldspringboot.config.exceptions.CantFollowYourselfOrAlreadyFollowedException;
-import org.example.realworldspringboot.config.exceptions.UserAlreadyExistsException;
-import org.example.realworldspringboot.config.exceptions.UserNotFoundException;
-import org.example.realworldspringboot.config.exceptions.UsernameOrEmailIsAlreadyTakenException;
+import org.example.realworldspringboot.config.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,6 +30,24 @@ public class AppExceptionHandler {
     @ExceptionHandler(CantFollowYourselfOrAlreadyFollowedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String cantFollowYourselfOrAlreadyFollowedExceptionHandler(CantFollowYourselfOrAlreadyFollowedException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(ArticleWithThisTitleAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String articleWithThisTitleAlreadyExistsExceptionHandler(ArticleWithThisTitleAlreadyExistsException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(ArticleNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String articleNotFoundExceptionHandler(ArticleNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(CantManageOtherUsersArticlesException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String cantManageOtherUsersArticlesExceptionHandler(CantManageOtherUsersArticlesException ex) {
         return ex.getMessage();
     }
 }

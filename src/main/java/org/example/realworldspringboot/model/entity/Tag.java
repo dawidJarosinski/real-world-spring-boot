@@ -17,6 +17,10 @@ public class Tag {
     @Column(name = "tag_id")
     private Integer id;
 
-    @Column(name = "tag_value")
+    @Column(name = "tag_value", unique = true)
     private String value;
+
+    public Tag(String value) {
+        this.value = value;
+    }
 }
