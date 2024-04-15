@@ -29,4 +29,10 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "comment_article")
     private Article article;
+
+    public Comment(String content, User author, Article article) {
+        this.content = content;
+        this.author = author;
+        this.article = article;
+    }
 }

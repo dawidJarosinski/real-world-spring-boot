@@ -50,4 +50,16 @@ public class AppExceptionHandler {
     public String cantManageOtherUsersArticlesExceptionHandler(CantManageOtherUsersArticlesException ex) {
         return ex.getMessage();
     }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String commentNotFoundExceptionHandler(CommentNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(CantManageOtherUsersCommentsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String cantManageOtherUsersCommentsExceptionHandler(CantManageOtherUsersCommentsException ex) {
+        return ex.getMessage();
+    }
 }

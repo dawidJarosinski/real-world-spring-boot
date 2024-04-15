@@ -43,6 +43,9 @@ public class Article {
     @JoinColumn(name = "article_author")
     private User author;
 
+    @OneToMany(targetEntity = Comment.class, mappedBy = "article", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
     public Article(String title, String description, String body, User author) {
         this.title = title;
         this.description = description;

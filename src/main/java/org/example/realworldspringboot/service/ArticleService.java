@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +108,7 @@ public class ArticleService {
             throw new ArticleWithThisTitleAlreadyExistsException();
         }
 
+        articleToUpdate.setUpdatedAt(LocalDateTime.now());
         articleRepo.save(articleToUpdate);
 
         return buildArticleResponse(currentUser, articleToUpdate);
