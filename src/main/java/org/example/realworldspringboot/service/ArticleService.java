@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.realworldspringboot.config.exceptions.ArticleNotFoundException;
 import org.example.realworldspringboot.config.exceptions.ArticleWithThisTitleAlreadyExistsException;
 import org.example.realworldspringboot.config.exceptions.CantManageOtherUsersArticlesException;
+import org.example.realworldspringboot.config.exceptions.UserNotFoundException;
 import org.example.realworldspringboot.dto.request.ArticleRequest;
 import org.example.realworldspringboot.dto.request.UpdateArticleRequest;
 import org.example.realworldspringboot.dto.response.ArticleResponse;
@@ -17,7 +18,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +50,13 @@ public class ArticleService {
     }
 
     public List<ArticleResponse> findAllArticles(String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         return articleRepo.findAll().stream().map(article -> buildArticleResponse(currentUser, article)).toList();
     }
 
     @Transactional
     public ArticleResponse createArticle(ArticleRequest request, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         Article article = new Article(
                 request.article().title(),
                 request.article().description(),
@@ -87,7 +87,7 @@ public class ArticleService {
 
     @Transactional
     public ArticleResponse updateArticle(UpdateArticleRequest request,String slug, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         Article articleToUpdate = articleRepo.findArticleBySlug(slug).orElseThrow(ArticleNotFoundException::new);
 
         if(articleToUpdate.getAuthor()!=currentUser) {
@@ -116,7 +116,7 @@ public class ArticleService {
 
     @Transactional
     public void deleteArticle(String slug, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         Article articleToDelete = articleRepo.findArticleBySlug(slug).orElseThrow(ArticleNotFoundException::new);
 
         if(!articleToDelete.getAuthor().equals(currentUser)) {

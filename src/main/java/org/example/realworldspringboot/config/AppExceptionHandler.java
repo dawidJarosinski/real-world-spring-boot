@@ -62,4 +62,16 @@ public class AppExceptionHandler {
     public String cantManageOtherUsersCommentsExceptionHandler(CantManageOtherUsersCommentsException ex) {
         return ex.getMessage();
     }
+
+    @ExceptionHandler(AlreadyFavoritedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String alreadyFavoritedExceptionHandler(AlreadyFavoritedException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(ArticleFavoritedNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String articleFavoritedNotFoundExceptionHandler(ArticleFavoritedNotFoundException ex) {
+        return ex.getMessage();
+    }
 }

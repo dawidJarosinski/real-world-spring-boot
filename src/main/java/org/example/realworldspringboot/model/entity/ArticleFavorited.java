@@ -24,4 +24,9 @@ public class ArticleFavorited {
     @ManyToOne
     @JoinColumn(name = "article_favorite_article")
     private Article article;
+
+    public ArticleFavorited(User user, Article article) {
+        this.user = user;
+        this.article = article;
+    }
 }

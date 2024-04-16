@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.realworldspringboot.config.exceptions.ArticleNotFoundException;
 import org.example.realworldspringboot.config.exceptions.CantManageOtherUsersCommentsException;
 import org.example.realworldspringboot.config.exceptions.CommentNotFoundException;
-import org.example.realworldspringboot.dto.request.ArticleRequest;
+import org.example.realworldspringboot.config.exceptions.UserNotFoundException;
 import org.example.realworldspringboot.dto.request.CommentRequest;
 import org.example.realworldspringboot.dto.response.CommentResponse;
 import org.example.realworldspringboot.dto.response.ProfileResponse;
@@ -33,7 +33,7 @@ public class CommentService {
 
     @Transactional
     public CommentResponse createComment(CommentRequest request, String slug, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         Article currentArticle = articleRepo.findArticleBySlug(slug).orElseThrow(ArticleNotFoundException::new);
 
         Comment comment = new Comment(request.comment().body(), currentUser, currentArticle);
@@ -43,7 +43,7 @@ public class CommentService {
     }
 
     public List<CommentResponse> getCommentsFromArticle(String slug, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         Article currentArticle = articleRepo.findArticleBySlug(slug).orElseThrow(ArticleNotFoundException::new);
 
         return commentRepo.findCommentsByArticle(currentArticle).stream().map(comment -> {
@@ -53,7 +53,7 @@ public class CommentService {
 
     @Transactional
     public void deleteCommentFromArticle(String slug, Integer id, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         Comment comment = commentRepo.findCommentById(id).orElseThrow(CommentNotFoundException::new);
 
         if(!comment.getArticle().equals(articleRepo.findArticleBySlug(slug).orElseThrow(ArticleNotFoundException::new))) {

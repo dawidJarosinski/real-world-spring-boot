@@ -22,7 +22,7 @@ public class ProfileService {
 
 
     public ProfileResponse findByUsername(String username, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         User user = userRepo.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
 
         return buildProfileResponse(currentUser, user);
@@ -30,7 +30,7 @@ public class ProfileService {
 
     @Transactional
     public ProfileResponse followUser(String username, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         User userToFollow = userRepo.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
 
         if(!userFollowRepo.existsByFollowerAndFollowed(currentUser, userToFollow) && !currentUser.equals(userToFollow)) {
@@ -45,7 +45,7 @@ public class ProfileService {
 
     @Transactional
     public ProfileResponse unfollowUser(String username, String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).get();
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
         User followedUser = userRepo.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
 
         Optional<UserFollow> follow = userFollowRepo.findUserFollowByFollowerAndFollowed(currentUser, followedUser);

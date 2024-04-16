@@ -1,7 +1,6 @@
 package org.example.realworldspringboot.repo;
 
 import org.example.realworldspringboot.model.entity.Article;
-import org.example.realworldspringboot.model.entity.Tag;
 import org.example.realworldspringboot.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

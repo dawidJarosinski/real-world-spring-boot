@@ -1,6 +1,7 @@
 package org.example.realworldspringboot.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.realworldspringboot.config.exceptions.UserNotFoundException;
 import org.example.realworldspringboot.config.exceptions.UsernameOrEmailIsAlreadyTakenException;
 import org.example.realworldspringboot.dto.request.UserRequest;
 import org.example.realworldspringboot.dto.response.UserResponse;
@@ -19,7 +20,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponse getActualUser(String username) {
-        User user = userRepository.findUserByUsername(username).get();
+        User user = userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
 
         return UserResponse.builder()
                 .user(
@@ -35,7 +36,7 @@ public class UserService {
     }
     @Transactional
     public UserResponse updateUser(UserRequest userRequest, String actualUserUsername) {
-        User user  = userRepository.findUserByUsername(actualUserUsername).get();
+        User user  = userRepository.findUserByUsername(actualUserUsername).orElseThrow(UserNotFoundException::new);
         if(userRequest.user().email() != null) {
             if(userRepository.existsByEmail(userRequest.user().email())) {
                 throw new UsernameOrEmailIsAlreadyTakenException();
