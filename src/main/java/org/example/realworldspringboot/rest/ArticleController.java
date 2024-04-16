@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.realworldspringboot.dto.request.ArticleRequest;
 import org.example.realworldspringboot.dto.request.UpdateArticleRequest;
 import org.example.realworldspringboot.dto.response.ArticleResponse;
-import org.example.realworldspringboot.model.entity.Article;
 import org.example.realworldspringboot.service.ArticleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,21 +23,22 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @GetMapping("/articles")
-    public ResponseEntity<List<ArticleResponse>> findAllArticles(@RequestParam(required = false) String tag,
-                                                         @RequestParam(required = false) String author,
-                                                         @RequestParam(required = false) String favorited,
-                                                                 Principal principal) {
-//        Map<String, String> params = new HashMap<>();
-//        if(tag != null) {
-//            params.put("tag", tag);
-//        }
-//        if(author != null) {
-//            params.put("author", tag);
-//        }
-//        if(favorited != null) {
-//            params.put("favorited", tag);
-//        }
-        return ResponseEntity.ok(articleService.findAllArticles(principal.getName()));
+    public ResponseEntity<List<ArticleResponse>> findAllArticles(
+                                                        @RequestParam(required = false) String tag,
+                                                        @RequestParam(required = false) String author,
+                                                        @RequestParam(required = false) String favorited,
+                                                        Principal principal) {
+        Map<String, String> params = new HashMap<>();
+        if(tag != null) {
+            params.put("tag", tag);
+        }
+        if(author != null) {
+            params.put("author", author);
+        }
+        if(favorited != null) {
+            params.put("favorited", favorited);
+        }
+        return ResponseEntity.ok(articleService.findAllArticles(params, principal.getName()));
     }
 
     @PostMapping("/articles")

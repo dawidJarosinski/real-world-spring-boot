@@ -9,10 +9,7 @@ import org.example.realworldspringboot.dto.request.ArticleRequest;
 import org.example.realworldspringboot.dto.request.UpdateArticleRequest;
 import org.example.realworldspringboot.dto.response.ArticleResponse;
 import org.example.realworldspringboot.dto.response.ProfileResponse;
-import org.example.realworldspringboot.model.entity.Article;
-import org.example.realworldspringboot.model.entity.ArticleTag;
-import org.example.realworldspringboot.model.entity.Tag;
-import org.example.realworldspringboot.model.entity.User;
+import org.example.realworldspringboot.model.entity.*;
 import org.example.realworldspringboot.repo.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -33,25 +30,26 @@ public class ArticleService {
     private final ArticleFavoritedRepo articleFavoritedRepo;
     private final UserFollowRepo userFollowRepo;
 
-    public List<Article> findAllArticles(Map<String, String> params) {
+    public List<ArticleResponse> findAllArticles(Map<String, String> params, String currentUserUsername) {
+        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
+
         List<Article> articles = articleRepo.findAll();
         if(params.containsKey("author")) {
             articles = articles.stream().filter(article -> article.getAuthor().getUsername().equals(params.get("author"))).toList();
         }
-//        if(params.containsKey("tag")) {
-//            Tag tag = tagRepo.findTagByValue(params.get("tag"));
-//            articles = articles.stream().filter(article -> article.getTags().contains(tag)).toList();
-//        }
-//        if(params.containsKey("favorited")) {
-//            User user = userRepo.findUserByUsername(params.get("favorited")).get();
-//            articles = articles.stream().filter(article -> article.getFavorited().contains(user)).toList();
-//        }
-        return articles;
-    }
-
-    public List<ArticleResponse> findAllArticles(String currentUserUsername) {
-        User currentUser = userRepo.findUserByUsername(currentUserUsername).orElseThrow(UserNotFoundException::new);
-        return articleRepo.findAll().stream().map(article -> buildArticleResponse(currentUser, article)).toList();
+        if(params.containsKey("tag")) {
+            Tag tag = tagRepo.findTagByValue(params.get("tag"));
+            articles = articles.stream().filter(article -> articleTagRepo.findArticleTagsByArticle(article)
+                        .stream()
+                        .map(articleTag -> articleTag.getTag().getValue()).toList().contains(params.get("tag"))).toList();
+        }
+        if(params.containsKey("favorited")) {
+            User user = userRepo.findUserByUsername(params.get("favorited")).orElse(null);
+            articles = articles.stream().filter(article -> articleFavoritedRepo.findArticleFavoritedByArticle(article)
+                    .stream()
+                    .map(articleFavorited -> articleFavorited.getUser().getUsername()).toList().contains(params.get("favorited"))).toList();
+        }
+        return articles.stream().map(article -> buildArticleResponse(currentUser, article)).toList();
     }
 
     @Transactional

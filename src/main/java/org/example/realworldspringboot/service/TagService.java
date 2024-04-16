@@ -6,8 +6,6 @@ import org.example.realworldspringboot.model.entity.Tag;
 import org.example.realworldspringboot.repo.TagRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class TagService{

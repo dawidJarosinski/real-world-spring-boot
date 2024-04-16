@@ -5,6 +5,7 @@ import org.example.realworldspringboot.model.entity.ArticleFavorited;
 import org.example.realworldspringboot.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ArticleFavoritedRepo extends JpaRepository<ArticleFavorited, Integer> {
@@ -14,4 +15,6 @@ public interface ArticleFavoritedRepo extends JpaRepository<ArticleFavorited, In
     Boolean existsArticleFavoritedByArticleAndUser(Article article, User user);
 
     Optional<ArticleFavorited> findArticleFavoritedByArticleAndUser(Article article, User user);
+
+    List<ArticleFavorited> findArticleFavoritedByArticle(Article article);
 }

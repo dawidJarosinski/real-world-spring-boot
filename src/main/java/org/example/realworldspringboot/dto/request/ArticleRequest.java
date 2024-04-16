@@ -1,7 +1,5 @@
 package org.example.realworldspringboot.dto.request;
 
-import org.example.realworldspringboot.model.entity.Article;
-
 import java.util.List;
 
 public record ArticleRequest(Article article) {
