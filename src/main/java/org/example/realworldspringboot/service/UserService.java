@@ -59,6 +59,8 @@ public class UserService {
             user.setImage(userRequest.user().image());
         }
 
+        userRepository.save(user);
+
         return UserResponse.builder()
                 .user(
                         UserResponse.User
