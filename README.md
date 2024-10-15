@@ -10,11 +10,13 @@ This application offers several functionalities:
 - Liking and Unliking articles
 - Creating, Reading, and Deleting comments for articles
 - Reading tags
+- Tests
 
 Technology Stack:
 - Spring Boot(Security, Data JPA, Web)
 - MySQL
 - JWT
+- AssertJ and Mockito for tests
 
 
 Available enpoints: https://realworld-docs.netlify.app/docs/specs/backend-specs/endpoints
