@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface ArticleRepo extends JpaRepository<Article, Integer> {
     Optional<Article> findArticleBySlug(String slug);
 
-    Boolean existsArticleByTitle(String slug);
+    Boolean existsArticleByTitle(String title);
 }

@@ -38,13 +38,11 @@ public class ArticleService {
             articles = articles.stream().filter(article -> article.getAuthor().getUsername().equals(params.get("author"))).toList();
         }
         if(params.containsKey("tag")) {
-            Tag tag = tagRepo.findTagByValue(params.get("tag"));
             articles = articles.stream().filter(article -> articleTagRepo.findArticleTagsByArticle(article)
                         .stream()
                         .map(articleTag -> articleTag.getTag().getValue()).toList().contains(params.get("tag"))).toList();
         }
         if(params.containsKey("favorited")) {
-            User user = userRepo.findUserByUsername(params.get("favorited")).orElse(null);
             articles = articles.stream().filter(article -> articleFavoritedRepo.findArticleFavoritedByArticle(article)
                     .stream()
                     .map(articleFavorited -> articleFavorited.getUser().getUsername()).toList().contains(params.get("favorited"))).toList();
@@ -61,12 +59,11 @@ public class ArticleService {
                 request.article().body(),
                 currentUser);
 
-        try{
-            articleRepo.save(article);
-        }
-        catch (DataIntegrityViolationException ex) {
+
+        if(articleRepo.existsArticleByTitle(request.article().title())) {
             throw new ArticleWithThisTitleAlreadyExistsException();
         }
+        articleRepo.save(article);
 
         for(String tagStringValue : request.article().tagList()) {
             Tag tag;
